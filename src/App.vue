@@ -1,43 +1,56 @@
 <template>
-    <v-app>
-        <v-app-bar app color="primary" dark>
-            <div class="d-flex align-center">
-                <v-img alt="Logo" class="shrink mr-2" contain src="/img/logo.png" transition="scale-transition" width="40"/>
-                
-                <h2>Distance Counter</h2>
-            </div>
+  <v-app id="inspire">
+    <v-app-bar app>
+      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
-            <v-spacer></v-spacer>
-        </v-app-bar>
+      <div class="d-flex align-center">
+        <v-img alt="Logo" class="shrink mr-2" contain src="/img/logo.png" transition="scale-transition" width="40"/>
         
-        <v-main>
-            <div v-if="alert.message" :class="`alert ${alert.type}`">{{alert.message}}</div>
+        <h2>Distance Counter</h2>
+      </div>
 
-            <router-view></router-view>
-        </v-main>
-    </v-app>
+      <v-spacer></v-spacer>
+    </v-app-bar>
+
+    <v-navigation-drawer
+      v-model="drawer"
+      fixed
+      temporary
+    >
+      <!--  -->
+    </v-navigation-drawer>
+
+    <v-main class="grey lighten-2">
+      <v-container>
+        <div v-if="alert.message" :class="`alert ${alert.type}`">{{alert.message}}</div>
+
+        <router-view></router-view>
+      </v-container>
+    </v-main>
+  </v-app>
 </template>
 
 <script>
-    import { mapState, mapActions } from 'vuex'
+  import { mapState, mapActions } from 'vuex'
 
-    export default {
-        name: 'app',
-        computed: {
-            ...mapState({
-                alert: state => state.alert
-            })
-        },
-        methods: {
-            ...mapActions({
-                clearAlert: 'alert/clear' 
-            })
-        },
-        watch: {
-            $route (){
-                // clear alert on location change
-                this.clearAlert();
-            }
-        } 
-    };
+  export default {
+    name: 'app',
+    data: () => ({ drawer: null }),
+    computed: {
+      ...mapState({
+        alert: state => state.alert
+      })
+    },
+    methods: {
+      ...mapActions({
+        clearAlert: 'alert/clear' 
+      })
+    },
+    watch: {
+        $route() {
+            // clear alert on location change
+            this.clearAlert();
+        }
+    } 
+  };
 </script>

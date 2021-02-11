@@ -4,10 +4,10 @@ import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify';
 
-import VeeValidate from 'vee-validate';
+// import VeeValidate from 'vee-validate';
 import { configureFakeBackend } from './helpers';
 
-Vue.use(VeeValidate);
+// Vue.use(VeeValidate);
 
 Vue.config.productionTip = false
 
