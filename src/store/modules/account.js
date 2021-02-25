@@ -1,4 +1,6 @@
 import { userService } from '../../services';
+import { rayadoService } from '../../services';
+import { balanceService } from '../../services';
 import router from '../../router';
 
 const user = JSON.parse(localStorage.getItem('user'));
@@ -45,10 +47,47 @@ const actions = {
                     dispatch('alert/error', error, { root: true });
                 }
             );
-    }
+    },
+    registerRayado({ dispatch, commit }, payload) {
+        rayadoService.register(payload.rayado)
+            .then(
+                () => {
+                    commit('setUser', JSON.parse(localStorage.getItem('user')));
+
+                    router.push('/');
+
+                    setTimeout(() => {
+                        // display success message after route change completes
+                        dispatch('alert/success', 'Registro de rayado completo', { root: true });
+                    })
+                },
+                error => {
+                    dispatch('alert/error', error, { root: true });
+                }
+            );
+    },
+    registerBalance({ dispatch, commit }, payload) {
+        balanceService.register(payload.balance)
+            .then(
+                () => {
+                    commit('setUser', JSON.parse(localStorage.getItem('user')));
+
+                    router.push('/');
+                    
+                    setTimeout(() => {
+                        // display success message after route change completes
+                        dispatch('alert/success', 'Registro de balance completo', { root: true });
+                    })
+                },
+                error => {
+                    dispatch('alert/error', error, { root: true });
+                }
+            );
+    },
 };
 
 const mutations = {
+
     loginRequest(state, user) {
         state.status = { loggingIn: true };
         state.user = user;
@@ -73,7 +112,10 @@ const mutations = {
     },
     registerFailure(state) {
         state.status = {};
-    }
+    },
+    setUser(state, user) {
+        state.user = user;
+    },
 };
 
 export const account = {

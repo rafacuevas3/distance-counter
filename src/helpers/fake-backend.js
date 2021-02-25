@@ -7,7 +7,6 @@ export function configureFakeBackend() {
         return new Promise((resolve, reject) => {
             // wrap in timeout to simulate server api call
             setTimeout(() => {
-
                 // authenticate
                 if (url.endsWith('/users/authenticate') && opts.method === 'POST') {
                     // get parameters from post request
@@ -120,9 +119,62 @@ export function configureFakeBackend() {
                     return;
                 }
 
+                /**
+                 * API for books
+                 */
+                
+                if (url.endsWith('/balance-general/register') && opts.method === 'POST') {
+                    // get new user object from post body
+                    let balance = JSON.parse(opts.body);
+                    let index = users.map(u => u.id).indexOf(balance.id_user);
+
+                    if (!users[index]) {
+                        reject('Not Found');
+                    }
+
+                    if (!users[index].balances) {
+                        users[index].balances = []
+                    }
+
+                    // save new user
+                    balance.id = users[index].balances.length ? Math.max(...users[index].balances.map(balance => balance.id)) + 1 : 1;
+                    users[index].balances.push(balance);
+                    localStorage.setItem('users', JSON.stringify(users));
+                    localStorage.setItem('user', JSON.stringify(users[index]));
+
+                    // respond 200 OK
+                    resolve({ ok: true, text: () => Promise.resolve() });
+
+                    return;
+                }
+
+                if (url.endsWith('/rayado-diario/register') && opts.method === 'POST') {
+                    // get new user object from post body
+                    let rayado = JSON.parse(opts.body);
+                    let index = users.map(u => u.id).indexOf(rayado.id_user);
+
+                    if (!users[index]) {
+                        reject('Not Found');
+                    }
+
+                    if (!users[index].rayados) {
+                        users[index].rayados = []
+                    }
+
+                    // save new user
+                    rayado.id = users[index].rayados.length ? Math.max(...users[index].rayados.map(rayado => rayado.id)) + 1 : 1;
+                    users[index].rayados.push(rayado);
+                    localStorage.setItem('users', JSON.stringify(users));
+                    localStorage.setItem('user', JSON.stringify(users[index]));
+
+                    // respond 200 OK
+                    resolve({ ok: true, text: () => Promise.resolve() });
+
+                    return;
+                }
+
                 // pass through any requests not handled above
                 realFetch(url, opts).then(response => resolve(response));
-
             }, 500);
         });
     }

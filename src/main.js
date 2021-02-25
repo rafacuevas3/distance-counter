@@ -6,10 +6,15 @@ import vuetify from './plugins/vuetify';
 
 // import VeeValidate from 'vee-validate';
 import { configureFakeBackend } from './helpers';
+import moment from 'moment'
 
 // Vue.use(VeeValidate);
 
 Vue.config.productionTip = false
+
+Vue.filter('date', (value, format = 'DD/MM/YY HH:mm A') => {
+    return moment(value).format(format)
+})
 
 configureFakeBackend();
 

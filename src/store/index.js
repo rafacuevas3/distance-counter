@@ -11,7 +11,7 @@ const store = new Vuex.Store({
     modules: {
         alert,
         account,
-        users
+        users,
     }
 });
 
