@@ -25,7 +25,7 @@ function getAll() {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/users`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/rayado-diario`, requestOptions).then(handleResponse);
 }
 
 
@@ -35,7 +35,7 @@ function getById(id) {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/users/${id}`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/rayado-diario/${id}`, requestOptions).then(handleResponse);
 }
 
 function update(user) {
@@ -45,17 +45,17 @@ function update(user) {
         body: JSON.stringify(user)
     };
 
-    return fetch(`${config.apiUrl}/users/${user.id}`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/rayado-diario/${user.id}`, requestOptions).then(handleResponse);
 }
 
 // prefixed function name with underscore because delete is a reserved word in javascript
-function _delete(id) {
+function _delete(userId, id) {
     const requestOptions = {
         method: 'DELETE',
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/users/${id}`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/rayado-diario/${userId}/${id}`, requestOptions).then(handleResponse);
 }
 
 function handleResponse(response) {

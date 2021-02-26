@@ -173,6 +173,56 @@ export function configureFakeBackend() {
                     return;
                 }
 
+                // delete balance
+                if (url.match(/\/balance-general\//) && opts.method === 'DELETE') {
+                    // find user by id in users array
+                    let urlParts = url.split('/');
+                    let id = parseInt(urlParts[urlParts.length - 1]);
+                    let userId = parseInt(urlParts[urlParts.length - 2]);
+                    
+                    for (let i = 0; i < users.length; i++) {
+                        let user = users[i];
+                        
+                        if (user.id === userId) {
+                            // delete user
+                            user.balances.splice(user.balances.map(r => r.id).indexOf(id), 1);
+                            localStorage.setItem('user', JSON.stringify(user));
+                            localStorage.setItem('users', JSON.stringify(users));
+                            break;
+                        }
+                    }
+
+                    // respond 200 OK
+                    resolve({ ok: true, text: () => Promise.resolve() });
+                    
+                    return;
+                }
+
+                // delete rayado
+                if (url.match(/\/rayado-diario\//) && opts.method === 'DELETE') {
+                    // find user by id in users array
+                    let urlParts = url.split('/');
+                    let id = parseInt(urlParts[urlParts.length - 1]);
+                    let userId = parseInt(urlParts[urlParts.length - 2]);
+                    
+                    for (let i = 0; i < users.length; i++) {
+                        let user = users[i];
+                        
+                        if (user.id === userId) {
+                            // delete user
+                            user.rayados.splice(user.rayados.map(r => r.id).indexOf(id), 1);
+                            localStorage.setItem('user', JSON.stringify(user));
+                            localStorage.setItem('users', JSON.stringify(users));
+                            break;
+                        }
+                    }
+
+                    // respond 200 OK
+                    resolve({ ok: true, text: () => Promise.resolve() });
+                    
+                    return;
+                }
+
                 // pass through any requests not handled above
                 realFetch(url, opts).then(response => resolve(response));
             }, 500);

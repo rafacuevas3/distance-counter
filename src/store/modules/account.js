@@ -84,10 +84,19 @@ const actions = {
                 }
             );
     },
+    deleteBalance({ commit }, payload) {
+        balanceService.delete(payload.userId, payload.itemId).then(() => {
+            commit('setUser', JSON.parse(localStorage.getItem('user')));
+        })
+    },
+    deleteRayado({ commit }, payload) {
+        rayadoService.delete(payload.userId, payload.itemId).then(() => {
+            commit('setUser', JSON.parse(localStorage.getItem('user')));
+        })
+    },
 };
 
 const mutations = {
-
     loginRequest(state, user) {
         state.status = { loggingIn: true };
         state.user = user;

@@ -57,7 +57,7 @@
 
     <v-main class="grey lighten-2">
       <v-container>
-        <div v-if="alert.message" :class="`alert ${alert.type}`">{{alert.message}}</div>
+        <v-alert v-if="alert.message" dense dismissible :type="alert.type">{{ alert.message }}</v-alert>
 
         <router-view></router-view>
       </v-container>
